@@ -1,1 +1,2 @@
-# vim
+learning Vim
+vimrc file backup
