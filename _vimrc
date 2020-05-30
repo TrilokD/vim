@@ -45,3 +45,14 @@ Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 call plug#end()
 
 colorscheme base16-black-metal-bathory
+
+" Unmap the Arrow keys
+no <down> <Nop>
+no <left> <Nop>
+no <right> <Nop>
+no <up> <Nop>
+
+ino <down> <Nop>
+ino <left> <Nop>
+ino <right> <Nop>
+ino <up> <Nop>
