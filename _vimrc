@@ -50,7 +50,7 @@ Plug 'itchyny/lightline.vim'
 
 " Plug 'vifm/vifm.vim' " vifm file manager
 
-Plug 'ap/vim-css-color' " Preview colours while editing; fetches https://github.com/ap/vim-css-color.git
+" Plug 'ap/vim-css-color' " Preview colours while editing; fetches https://github.com/ap/vim-css-color.git
 
 
 " Initialize plugin system
