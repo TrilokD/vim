@@ -2,6 +2,7 @@ syntax on
 set clipboard=unnamed
 let mapleader = ","
 set number
+set number relativenumber
 
 " Mapping to reload configuration
 nmap <leader>so :source $HOME\_vimrc<CR>
@@ -41,6 +42,17 @@ Plug 'junegunn/vim-easy-align'
 " On-demand loading
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 
+" Lightline; statusline/tabline; fetches https://github.com/itchyny/lightline.vim
+Plug 'itchyny/lightline.vim'
+
+" nnn; File manager https://github.com/mcchrish/nnn.vim.git
+" Plug 'mcchrish/nnn.vim'
+
+" Plug 'vifm/vifm.vim' " vifm file manager
+
+Plug 'ap/vim-css-color' " Preview colours while editing; fetches https://github.com/ap/vim-css-color.git
+
+
 " Initialize plugin system
 call plug#end()
 
@@ -56,3 +68,9 @@ ino <down> <Nop>
 ino <left> <Nop>
 ino <right> <Nop>
 ino <up> <Nop>
+
+" Setting Lightline-Plugin
+set laststatus=2
+
+" --INSERT-- is unnecessary anymore because the mode information is displayed in the statusline.
+set noshowmode
