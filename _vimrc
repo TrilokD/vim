@@ -2,10 +2,36 @@ syntax on
 set clipboard=unnamed
 let mapleader = ","
 set number
-set number relativenumber
+set cursorline
+set noeb vb t_vb=
+set tabstop=4 softtabstop=4 shiftwidth=4
+set shiftround
+set expandtab
+set smartindent
+set nowrap
+set smartcase
+set hlsearch
+set incsearch
+set ignorecase
+set noswapfile
+set bs=2
+set fo-=t   " don't automatically wrap text when typing
+set colorcolumn=80
+highlight ColorColumn ctermbg=233
+
+set nobackup
+set nowritebackup
+set noswapfile
 
 " Mapping to reload configuration
-nmap <leader>so :source $HOME\_vimrc<CR>
+nmap <leader>sv :source $HOME\_vimrc<CR>
+nmap <leader>ev :edit $HOME\_vimrc<CR>
+
+vnoremap <leader>s :sort<CR>
+
+" easier formatting of paragraphs
+vmap Q gq
+nmap Q gqap
 
 if has("gui_running")
   if has("gui_gtk2")
@@ -25,52 +51,129 @@ endif
 set pythonthreehome=C:\Users\ADMIN\AppData\Local\Programs\Python\Python38\
 set pythonthreedll=C:\Users\ADMIN\AppData\Local\Programs\Python\Python38\python38.dll
 
+
 " Specify a directory for plugins
 " - For Neovim: stdpath('data') . '/plugged'
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
 
-" Colorscheme
 Plug 'chriskempson/base16-vim'
-
-" Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
 Plug 'junegunn/vim-easy-align'
-
-" Multiple Plug commands can be written in a single line using | separators
 " Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-
-" On-demand loading
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-
-" Lightline; statusline/tabline; fetches https://github.com/itchyny/lightline.vim
 Plug 'itchyny/lightline.vim'
-
-" nnn; File manager https://github.com/mcchrish/nnn.vim.git
+Plug 'scrooloose/syntastic'
+" Plug 'nvie/vim-flake8' " F7
+Plug 'dense-analysis/ale' "Ale
+Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 " Plug 'mcchrish/nnn.vim'
-
 " Plug 'vifm/vifm.vim' " vifm file manager
-
+" Plug 'vifm/vifm'
 " Plug 'ap/vim-css-color' " Preview colours while editing; fetches https://github.com/ap/vim-css-color.git
-
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Initialize plugin system
 call plug#end()
 
-colorscheme base16-black-metal-bathory
+""""""""""""""""""""""" Ale
+let b:ale_linters = {'python': ['flake8', 'pydocstyle', 'bandit', 'mypy']}
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'python': ['black', 'isort'],
+\}
+let g:ale_fix_on_save = 1
 
-" Unmap the Arrow keys
-no <down> <Nop>
+
+" Show whitespace
+" MUST be inserted BEFORE the colorscheme command
+autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+au InsertLeave * match ExtraWhitespace /\s\+$/
+
+" Setting Lightline-Plugin
+let g:lightline = {
+      \ 'colorscheme': 'seol256',
+      \ }
+
+" base16
+colorscheme base16-3024
+set laststatus=2
+
+set history=700
+set undolevels=700
+
+" General mapping
+no <down> ddp
 no <left> <Nop>
 no <right> <Nop>
-no <up> <Nop>
+no <up> ddkP
 
 ino <down> <Nop>
 ino <left> <Nop>
 ino <right> <Nop>
 ino <up> <Nop>
 
-" Setting Lightline-Plugin
-set laststatus=2
+vno <down> <Nop>
+vno <left> <Nop>
+vno <right> <Nop>
+vno <up> <Nop>
+
+vno <down> <Nop>
+vno <left> <Nop>
+vno <right> <Nop>
+vno <up> <Nop>
+
+nmap <C-Tab> :tabnext<CR>
+nmap <C-S-Tab> :tabprevious<CR>
+map <C-Tab> :tabnext<CR>
+map <C-S-Tab> :tabprevious<CR>
+imap <C-Tab> <ESC>:tabnext<CR>
+imap <C-S-Tab> <ESC>:tabprevious<CR>
+nmap <Leader>h :tabnew %:h<CR>
+
+imap <leader>' ''<ESC>i
+imap <leader>" ""<ESC>i
+imap <leader>( ()<ESC>i
+imap <leader>[ []<ESC>i
+
+noremap <C-Z> :update<CR>
+vnoremap <C-Z> <C-C>:update<CR>
+inoremap <C-Z> <C-O>:update<CR>
+
+noremap <leader>e :q<CR>
+noremap <leader>E :qa!<CR>
+
+" set <F5> to exec pythonFile
+noremap <F5> :!python %<CR>
+
+" easier moving of code blocks
+" Try to go into visual mode (v), thenselect several lines of code here and
+" then press ``>`` several times.
+vnoremap < <gv  " better indentation
+vnoremap > >gv  " better indentation
+
+" NERDTree
+noremap <leader>n :NERDTreeToggle<CR>
+autocmd vimenter * NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
 
 " --INSERT-- is unnecessary anymore because the mode information is displayed in the statusline.
 set noshowmode
+
+" kite status line
+set statusline=%<%f\ %h%m%r%{kite#statusline()}%=%-14.(%l,%c%V%)\ %P
+
+" Syntastic recommended settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" check every time you write a Python file
+" autocmd BufWritePost *.py call flake8#Flake8()
+
+set nofoldenable
