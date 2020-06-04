@@ -15,13 +15,6 @@ set incsearch
 set ignorecase
 set noswapfile
 set bs=2
-set fo-=t   " don't automatically wrap text when typing
-set colorcolumn=80
-highlight ColorColumn ctermbg=233
-
-set nobackup
-set nowritebackup
-set noswapfile
 
 " Mapping to reload configuration
 nmap <leader>sv :source $HOME\_vimrc<CR>
@@ -48,29 +41,22 @@ if has("gui_running")
   endif
 endif
 
+" - Avoid using standard Vim directory names like 'plugin'
 set pythonthreehome=C:\Users\ADMIN\AppData\Local\Programs\Python\Python38\
 set pythonthreedll=C:\Users\ADMIN\AppData\Local\Programs\Python\Python38\python38.dll
 
 
-" Specify a directory for plugins
-" - For Neovim: stdpath('data') . '/plugged'
-" - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
 
 Plug 'chriskempson/base16-vim'
 Plug 'junegunn/vim-easy-align'
-" Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/syntastic'
-" Plug 'nvie/vim-flake8' " F7
 Plug 'dense-analysis/ale' "Ale
-Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
-" Plug 'mcchrish/nnn.vim'
-" Plug 'vifm/vifm.vim' " vifm file manager
-" Plug 'vifm/vifm'
-" Plug 'ap/vim-css-color' " Preview colours while editing; fetches https://github.com/ap/vim-css-color.git
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'vim-python/python-syntax'
+
 
 " Initialize plugin system
 call plug#end()
@@ -83,6 +69,8 @@ let g:ale_fixers = {
 \}
 let g:ale_fix_on_save = 1
 
+" PySyntax
+let g:python_highlight_all = 1
 
 " Show whitespace
 " MUST be inserted BEFORE the colorscheme command
@@ -91,7 +79,7 @@ au InsertLeave * match ExtraWhitespace /\s\+$/
 
 " Setting Lightline-Plugin
 let g:lightline = {
-      \ 'colorscheme': 'seol256',
+      \ 'colorscheme': 'simpleblack',
       \ }
 
 " base16
@@ -106,11 +94,6 @@ no <down> ddp
 no <left> <Nop>
 no <right> <Nop>
 no <up> ddkP
-
-ino <down> <Nop>
-ino <left> <Nop>
-ino <right> <Nop>
-ino <up> <Nop>
 
 vno <down> <Nop>
 vno <left> <Nop>
@@ -153,15 +136,9 @@ vnoremap > >gv  " better indentation
 
 " NERDTree
 noremap <leader>n :NERDTreeToggle<CR>
-autocmd vimenter * NERDTree
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
 
 " --INSERT-- is unnecessary anymore because the mode information is displayed in the statusline.
 set noshowmode
-
-" kite status line
-set statusline=%<%f\ %h%m%r%{kite#statusline()}%=%-14.(%l,%c%V%)\ %P
 
 " Syntastic recommended settings
 set statusline+=%#warningmsg#
